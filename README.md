@@ -26,7 +26,47 @@ This repository contains a fully working, low VRAM–optimized PixArtAlpha pipel
    ```bash
    git clone https://github.com/aarontuyet/comfyui-pixart-alpha-venv.git
 
+Open Anaconda Prompt:
 
+bash
+Copy
+Edit
+cd comfyui-pixart-alpha-venv
+call ActivateComfy.bat
+ComfyUI launches with PixArtAlpha ready to go!
+
+📁 Folder Highlights
+custom_nodes/ComfyUI-PixArt-alpha-Diffusers/PixArtAlpha.py → The magic node
+
+__README_ZIP_STUFF__/ → Version logs, launcher scripts, zipped backup materials
+
+requirements_venv_LOCKED.txt → Full package list for environment recreation
+
+🧠 Notes
+Torch & Diffusers are pinned in the venv for stability
+
+No .safetensors, .ckpt, or models are committed — use HuggingFace for loading
+
+All logs are versioned and restorable
+
+👑 Built & Maintained By
+Aaron Sogoian
+github.com/aarontuyet
+
+yaml
+Copy
+Edit
+
+---
+
+## ✅ Next Step
+
+Drop that `README.md` into `C:\DevProjects\ComfyUI\README.md` and run:
+
+```bash
+git add README.md
+git commit -m "Add clean GitHub README"
+git push
 
 
 
