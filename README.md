@@ -19,7 +19,7 @@ This repository contains a fully working, low VRAM–optimized PixArtAlpha pipel
 - Manual node surgery documented in `CHANGELOG.txt`
 
 ---
-
+<div align="center"/>
 ## 🚀 How to Run
 
 1. Clone the repo:
@@ -53,15 +53,7 @@ All logs are versioned and restorable
 Aaron Sogoian
 github.com/aarontuyet
 
-yaml
-Copy
-Edit
 
----
-
-## ✅ Next Step
-
-Drop that `README.md` into `C:\DevProjects\ComfyUI\README.md` and run:
 
 ```bash
 git add README.md
