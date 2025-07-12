@@ -1,0 +1,98 @@
+PixArtAlpha ComfyUI Setup - CHANGELOG
+=====================================
+
+2025-07-11 - Finalized Working Low VRAM Pipeline (PixArtAlpha Stable Build)
+----------------------------------------------------------------------------
+
+🔧 Major Edits to PixArtAlpha.py:
+
+1. Class: PA_BaseModelLoader_fromhub_Zho
+----------------------------------------
+- Replaced manual `.to("cuda")` calls with Accelerate offloading hooks:
+    • Removed: `pipe.vae.to("cpu")`, `pipe.text_encoder.to(...)`, `pipe.transformer.to(...)`
+    • Added:
+        - `pipe.enable_model_cpu_offload()` → enables memory-safe, dynamic layer loading
+        - `pipe.enable_attention_slicing()` → reduces attention memory usage
+        - `pipe.to("cpu")` → allows Accelerate to move layers to GPU just-in-time
+
+- Rationale:
+    • Prevented mismatched layer/device OOM crashes
+    • Reduced GPU footprint for 6GB VRAM
+    • Enabled stable use of full PixArtAlpha XL model
+
+2. Class: PA_Generation_Zho
+----------------------------
+- Inserted GPU memory cleanup before generation:
+    ```python
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    gc.collect()
+    ```
+
+- Replaced global `device` usage with safe dynamic generator:
+    ```python
+    generator = torch.Generator(device="cuda" if torch.cuda.is_available() else "cpu").manual_seed(seed)
+    ```
+
+- Preserved full scheduler-switching logic:
+    • `DPMSolverMultistepScheduler` and custom `SASolverScheduler` support retained
+
+- Enhanced output handling for both tuple and pipeline-returned formats:
+    • PIL → NumPy → Tensor pipeline preserved
+    • Batch and NHWC output logic untouched
+
+- Rationale:
+    • Prevented leftover allocations from crashing runs
+    • Ensured consistent image tensor formatting for ComfyUI
+    • Made scheduler interchangeable with no GPU/device assumptions
+
+3. Global Script Updates
+-------------------------
+- Retained custom style injection logic via `PA_Styler_Zho` with no edits
+- Preserved `style_template` and `sa_solver_diffusers` imports
+- Removed hard-coded device switching logic from global scope
+- Maintained full `NODE_CLASS_MAPPINGS` and `NODE_DISPLAY_NAME_MAPPINGS` for ComfyUI detection
+
+-------------------------------------------------------------------
+
+2025-07-11 - Environment & Shell Setup
+--------------------------------------
+- Continued using local venv: `C:\DevProjects\ComfyUI\venv`
+- Avoided using older Conda env (`comfy`) that contained outdated torch/diffusers
+- All package versions and model compatibility are specific to the venv
+
+2025-07-11 - ComfyUI Launcher Setup
+-----------------------------------
+- Created `ActivateComfy.bat` to:
+    • Activate venv
+    • Set `PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128`
+    • Launch `main.py --lowvram --cuda-device 0`
+    • Save output to timestamped `runlog_*.txt`
+
+- Verified launch completes in 50–60s with PixArtAlpha XL at 512x768, 20 steps
+
+2025-07-11 - Shortcut Creation (Conda Terminal + Venv Launcher)
+----------------------------------------------------------------
+- Created shortcut: `CondaComfyUI.lnk`
+    • Target: `cmd.exe /k "C:\Miniconda3\Scripts\activate.bat && call C:\DevProjects\ComfyUI\ActivateComfy.bat"`
+    • “Start in”: `C:\DevProjects\ComfyUI`
+    • Launches inside Anaconda Prompt (clean log rendering)
+
+- Solved:
+    • Broken tqdm bars in PowerShell
+    • Output formatting issues
+    • Garbled HuggingFace logs
+
+-------------------------------------------------------------------
+
+This setup is now fully locked and stable for:
+- Windows 11
+- Python 3.10 (in venv)
+- RTX 3050 (6GB VRAM)
+- Conda shell + local venv combo
+- Accelerate-offloaded PixArtAlpha workflows in ComfyUI
+
+Next Steps:
+- Consider exporting `requirements.txt` or zipping `venv` for portability
+- Retest on 4070 with 12GB+ VRAM to explore Option B (manual `.to()` control)
+
