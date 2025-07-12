@@ -1,5 +1,3 @@
-<div align="center">
-
 # ComfyUI PixArtAlpha Venv Edition
 
 This repository contains a fully working, low VRAM–optimized PixArtAlpha pipeline running in ComfyUI with custom nodes, version logs, launcher scripts, and accelerated inference for RTX 3050-class GPUs.
@@ -52,14 +50,6 @@ All logs are versioned and restorable
 👑 Built & Maintained By
 Aaron Sogoian
 github.com/aarontuyet
-
-
-
-```bash
-git add README.md
-git commit -m "Add clean GitHub README"
-git push
-
 
 
 # ComfyUI
