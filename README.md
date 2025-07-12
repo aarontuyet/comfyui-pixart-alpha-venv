@@ -1,5 +1,35 @@
 <div align="center">
 
+# ComfyUI PixArtAlpha Venv Edition
+
+This repository contains a fully working, low VRAM–optimized PixArtAlpha pipeline running in ComfyUI with custom nodes, version logs, launcher scripts, and accelerated inference for RTX 3050-class GPUs.
+
+---
+
+## 🔧 Key Features
+
+- PixArtAlpha XL 1024 model integration (HuggingFace)
+- Accelerate offloading: just-in-time GPU memory handling
+- 6GB VRAM-safe with tested performance up to 1024×1024 @ 13 steps
+- Custom `PixArtAlpha.py` node (`PA_BaseModelLoader_fromhub_Zho`)
+- Full launcher (`ActivateComfy.bat`) with memory config
+- Conda shell integration for clean logs and UTF-safe output
+- Auto-logging to `runlog_*.txt`
+- Version tracking via `version_report.py`
+- Manual node surgery documented in `CHANGELOG.txt`
+
+---
+
+## 🚀 How to Run
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/aarontuyet/comfyui-pixart-alpha-venv.git
+
+
+
+
+
 # ComfyUI
 **The most powerful and modular visual AI engine and application.**
 
